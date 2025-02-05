@@ -1,0 +1,17 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.override.tfvars
+*.lock.hcl
+*.binary
+tfplan.*
+
+# Private keys
+*.pem
+
+# OS
+*.DS_Store
+
+# IDE - VSCode
+.vscode/*
