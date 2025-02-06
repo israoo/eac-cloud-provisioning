@@ -1,4 +1,4 @@
-# EaC en AWS: Infraestructura, Políticas y Configuraciones
+# EaC en AWS: Infraestructura, políticas y configuraciones
 
 Este repositorio contiene la infraestructura (IaC), políticas de validación (PaC) y configuraciones (CaC) para el despliegue de un servidor de aplicaciones web en una instancia de EC2 en AWS, utilizando Terraform, OPA (Open Policy Agent) y Ansible.
 
