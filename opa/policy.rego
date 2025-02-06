@@ -35,25 +35,26 @@ deny_ec2_cost[msg] if {
     msg := sprintf("Instance '%s' of type '%s' has a cost of %0.4f USD/hour. Only instances with a cost lower than 0.05 USD/hour are allowed.", [resource.address, instance_type, cost])
 }
 
-# -------------------------------------------------------
-# Rule 3: Deny security groups with SSH open to the world
-# -------------------------------------------------------
+# -------------------------------------------------------------
+# Rule 3: Deny security groups allowing all inbound traffic
+# -------------------------------------------------------------
 
 deny_sg_ingress[msg] if {
     resource := resources[_]
     resource.type == "aws_security_group"
     some idx
     ingress_rule := resource.change.after.ingress[idx]
-    ingress_rule.from_port == 22
-    ingress_rule.to_port == 22
+    ingress_rule.from_port == 0
+    ingress_rule.to_port == 0
     some j
     ingress_rule.cidr_blocks[j] == "0.0.0.0/0"
-    msg := sprintf("Security group '%s' allows SSH traffic from anywhere. Only SSH ingress rules from a specific IP are allowed.", [resource.address])
+    ingress_rule.protocol == "-1"
+    msg := sprintf("Security group '%s' allows all inbound traffic from the internet. Only allow inbound traffic from specific IP ranges.", [resource.address])
 }
 
-# -------------------------------------------------------
+# -------------------------------------------------------------
 # Aggregate all violations in one rule
-# -------------------------------------------------------
+# -------------------------------------------------------------
 
 violations[msg] if {
     deny_missing_name_tag[msg]
@@ -67,8 +68,8 @@ violations[msg] if {
     deny_sg_ingress[msg]
 }
 
-# -------------------------------------------------------
+# -------------------------------------------------------------
 # Rule to count total violations
-# -------------------------------------------------------
+# -------------------------------------------------------------
 
 violations_count = count({ msg | violations[msg] })
