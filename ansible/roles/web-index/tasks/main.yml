@@ -1,0 +1,10 @@
+---
+- name: Copy index.html
+  become: yes
+  template:
+    src: index.html
+    dest: /usr/share/nginx/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload nginx

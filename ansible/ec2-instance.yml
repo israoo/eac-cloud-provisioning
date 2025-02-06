@@ -1,0 +1,9 @@
+---
+- hosts: ec2-instance
+
+  vars_files:
+    - vars/ec2-instance.yml
+
+  roles:
+    - nginx-setup
+    - web-index

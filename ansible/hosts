@@ -1,0 +1,2 @@
+[ec2-instance]
+'{{ ec2_instance_public_ip }}' ansible_connection=ssh ansible_user='{{ ec2_instance_user }}' ansible_ssh_private_key_file=terraform_generated_key.pem
